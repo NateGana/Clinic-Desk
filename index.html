@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClinicDesk — Clinic Appointment Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="disclaimer-bar">This is a demonstration project for portfolio purposes only — not a real medical records system.</div>
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="brand-mark">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 5.5 5.5 5.5 0 0121.5 12c-2.5 4.5-9.5 9-9.5 9z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12h2v-2h2v2h2v2h-2v2h-2v-2H9z" fill="currentColor" stroke="none"/></svg>
+      </span>
+      <span class="brand-name">ClinicDesk</span>
+    </div>
+    <nav class="nav">
+      <button class="nav-item active" data-view="dashboard">
+        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-item" data-view="appointments">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Appointments
+      </button>
+      <button class="nav-item" data-view="patients">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7"/><path d="M16 3.5a4 4 0 010 7.8"/></svg>
+        Patients
+      </button>
+      <button class="nav-item" data-view="doctors">
+        <svg viewBox="0 0 24 24"><path d="M9 3v4a2 2 0 01-2 2H3m0 6v4a2 2 0 002 2h4m10-18h-4a2 2 0 00-2 2v0"/><circle cx="17" cy="14" r="4"/></svg>
+        Doctors
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="mini-card">
+        <p class="mini-card-title">Today's schedule</p>
+        <p class="mini-card-text">Check who's coming in today at a glance.</p>
+        <button class="mini-card-btn" id="goToday">View today</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="scrim" id="scrim"></div>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="page-title">
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="pageSubtitle">Today's clinic overview</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" id="globalSearch" placeholder="Search patients…">
+        </div>
+        <div class="user-chip">
+          <div class="avatar">FC</div>
+          <div class="user-info">
+            <span class="user-name">Front Desk — Cess</span>
+            <span class="user-role">Clinic Coordinator</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- DASHBOARD -->
+      <section class="view active" id="view-dashboard">
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-icon icon-teal"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7"/></svg></div><div><p class="stat-label">Total Patients</p><p class="stat-value" id="statTotalPatients">0</p></div></div>
+          <div class="stat-card"><div class="stat-icon icon-blue"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div><p class="stat-label">Today's Appointments</p><p class="stat-value" id="statTodayAppts">0</p></div></div>
+          <div class="stat-card"><div class="stat-icon icon-amber"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div><p class="stat-label">Upcoming Appointments</p><p class="stat-value" id="statUpcomingAppts">0</p></div></div>
+          <div class="stat-card"><div class="stat-icon icon-green"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div><p class="stat-label">Completed Visits</p><p class="stat-value" id="statCompletedVisits">0</p></div></div>
+          <div class="stat-card wide"><div class="stat-icon icon-teal"><svg viewBox="0 0 24 24"><path d="M9 3v4a2 2 0 01-2 2H3m0 6v4a2 2 0 002 2h4m10-18h-4a2 2 0 00-2 2v0"/><circle cx="17" cy="14" r="4"/></svg></div><div><p class="stat-label">Available Doctors Today</p><p class="stat-value" id="statAvailableDoctors">0</p></div></div>
+        </div>
+
+        <div class="panel-grid">
+          <div class="panel">
+            <div class="panel-head"><h2>Today's Appointments</h2></div>
+            <div id="todayAppointmentsList" class="appt-list"></div>
+            <div class="empty-state" id="todayAppointmentsEmpty" hidden><p>No appointments today</p><span>Enjoy the quiet — or schedule a new visit.</span></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h2>Doctors on Duty</h2></div>
+            <div id="doctorsOnDuty" class="doctor-mini-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APPOINTMENTS -->
+      <section class="view" id="view-appointments">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <select id="apptDoctorFilter" class="select-input"><option value="">All Doctors</option></select>
+            <select id="apptStatusFilter" class="select-input">
+              <option value="">All Statuses</option>
+              <option value="Scheduled">Scheduled</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+            <input type="date" id="apptDateFilter" class="select-input">
+            <button class="btn btn-ghost" id="clearDateFilter">Clear date</button>
+          </div>
+          <button class="btn btn-primary" id="addAppointmentBtn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add Appointment</button>
+        </div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Time</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="appointmentsBody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="appointmentsEmpty" hidden><p>No appointments found</p><span>Try a different filter or schedule a new appointment.</span></div>
+        </div>
+      </section>
+
+      <!-- PATIENTS -->
+      <section class="view" id="view-patients">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              <input type="text" id="patientSearch" placeholder="Search patients…">
+            </div>
+          </div>
+          <button class="btn btn-primary" id="addPatientBtn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add Patient</button>
+        </div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Patient ID</th><th>Full Name</th><th>Age</th><th>Contact</th><th>Email</th><th>Registered</th><th>Actions</th></tr></thead>
+              <tbody id="patientsBody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="patientsEmpty" hidden><p>No patients found</p><span>Add a patient to begin scheduling their visits.</span></div>
+        </div>
+      </section>
+
+      <!-- DOCTORS -->
+      <section class="view" id="view-doctors">
+        <div class="toolbar">
+          <div class="toolbar-left"></div>
+          <button class="btn btn-primary" id="addDoctorBtn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add Doctor</button>
+        </div>
+        <div class="card-grid" id="doctorsGrid"></div>
+        <div class="empty-state" id="doctorsEmpty" hidden><p>No doctors yet</p><span>Add a doctor to begin scheduling appointments.</span></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- PATIENT MODAL -->
+<div class="modal-overlay" id="patientModalOverlay">
+  <div class="modal">
+    <div class="modal-head"><h3 id="patientModalTitle">Add Patient</h3><button class="modal-close" data-close-modal="patientModalOverlay">&times;</button></div>
+    <form id="patientForm" class="modal-body">
+      <input type="hidden" id="patientId">
+      <div class="form-row"><label>Full Name</label><input type="text" id="patientName" required placeholder="e.g. Lorenzo Aguilar"></div>
+      <div class="form-grid">
+        <div class="form-row"><label>Age</label><input type="number" id="patientAge" min="0" max="120" required placeholder="e.g. 34"></div>
+        <div class="form-row"><label>Contact Number</label><input type="text" id="patientPhone" required placeholder="e.g. 0917 555 0142"></div>
+      </div>
+      <div class="form-row"><label>Email</label><input type="email" id="patientEmail" required placeholder="e.g. lorenzo@email.com"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal="patientModalOverlay">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="patientSubmitBtn">Add Patient</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- DOCTOR MODAL -->
+<div class="modal-overlay" id="doctorModalOverlay">
+  <div class="modal">
+    <div class="modal-head"><h3 id="doctorModalTitle">Add Doctor</h3><button class="modal-close" data-close-modal="doctorModalOverlay">&times;</button></div>
+    <form id="doctorForm" class="modal-body">
+      <input type="hidden" id="doctorId">
+      <div class="form-row"><label>Doctor Name</label><input type="text" id="doctorName" required placeholder="e.g. Dr. Patricia Lim"></div>
+      <div class="form-row"><label>Specialization</label><input type="text" id="doctorSpecialization" required placeholder="e.g. Family Medicine"></div>
+      <div class="form-row"><label>Schedule</label><input type="text" id="doctorSchedule" required placeholder="e.g. Mon–Fri, 9:00 AM–5:00 PM"></div>
+      <div class="form-row"><label>Status</label>
+        <select id="doctorStatus"><option>Available</option><option>Unavailable</option><option>On Leave</option></select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal="doctorModalOverlay">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="doctorSubmitBtn">Add Doctor</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- APPOINTMENT MODAL -->
+<div class="modal-overlay" id="appointmentModalOverlay">
+  <div class="modal">
+    <div class="modal-head"><h3 id="appointmentModalTitle">Add Appointment</h3><button class="modal-close" data-close-modal="appointmentModalOverlay">&times;</button></div>
+    <form id="appointmentForm" class="modal-body">
+      <input type="hidden" id="appointmentId">
+      <div class="form-grid">
+        <div class="form-row"><label>Patient</label><select id="appointmentPatient" required></select></div>
+        <div class="form-row"><label>Doctor</label><select id="appointmentDoctor" required></select></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-row"><label>Date</label><input type="date" id="appointmentDate" required></div>
+        <div class="form-row"><label>Time</label><input type="time" id="appointmentTime" required></div>
+      </div>
+      <div class="form-row"><label>Reason for Visit</label><input type="text" id="appointmentReason" required placeholder="e.g. Annual physical exam"></div>
+      <div class="form-row"><label>Status</label>
+        <select id="appointmentStatus"><option>Scheduled</option><option>Confirmed</option><option>Completed</option><option>Cancelled</option></select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal="appointmentModalOverlay">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="appointmentSubmitBtn">Add Appointment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="confirmModalOverlay">
+  <div class="modal modal-sm">
+    <div class="modal-head"><h3 id="confirmModalTitle">Are you sure?</h3><button class="modal-close" data-close-modal="confirmModalOverlay">&times;</button></div>
+    <div class="modal-body">
+      <p class="modal-note" id="confirmModalText">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal="confirmModalOverlay">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmModalActionBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
